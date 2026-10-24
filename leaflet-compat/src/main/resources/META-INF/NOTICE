@@ -1,0 +1,5 @@
+Based on gwty-leaflet 1.2.1, Copyright 2016 G-Widgets.
+https://github.com/gwidgets/gwty-leaflet
+
+This distribution contains local API corrections and TeaVM adaptation.
+See the module README for provenance, changes, and tested scope.

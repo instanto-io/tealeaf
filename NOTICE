@@ -1,0 +1,12 @@
+Tealeaf
+Copyright 2026 Carl Stainton
+
+Derived from gwty-leaflet by the gwidgets contributors, under Apache License 2.0.
+Upstream: https://github.com/gwidgets/gwty-leaflet
+Baseline: com.gwidgets:gwty-leaflet:1.2.1:sources (82 Java files).
+Exact source archive URL and SHA-256: leaflet-compat/upstream.json.
+
+Local changes include TeaVM source adaptation, explicit callback removal,
+correct native namespaces, keyboard option assignment, primitive numeric native
+boundaries, formatting, and a Leaflet 1.9.4 demo. This is an independent fork.
+Leaflet itself is separately distributed under its upstream BSD-2-Clause license.

@@ -1,0 +1,8 @@
+<FindBugsFilter>
+  <!-- This native method invokes Leaflet Point.clone(), not Java Object.clone().
+       Java Cloneable has no role in the JavaScript object's cloning semantics. -->
+  <Match>
+    <Class name="com.gwidgets.api.leaflet.Point"/>
+    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
+  </Match>
+</FindBugsFilter>
