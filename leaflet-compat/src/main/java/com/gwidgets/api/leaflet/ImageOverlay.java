@@ -14,7 +14,9 @@ package com.gwidgets.api.leaflet;
 import com.gwidgets.api.leaflet.events.EventCallback;
 import com.gwidgets.api.leaflet.options.PopupOptions;
 import com.gwidgets.api.leaflet.options.TooltipOptions;
+import elemental2.dom.Element;
 import elemental2.dom.HTMLElement;
+import elemental2.dom.HTMLImageElement;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
 
@@ -27,7 +29,32 @@ import jsinterop.annotations.JsType;
 @JsType(isNative = true)
 public class ImageOverlay implements Layer, Evented {
 
-  private ImageOverlay() {}
+  protected ImageOverlay() {}
+
+  /** Change the image source. */
+  @JsMethod
+  public native L setUrl(String url);
+
+  /** Move or resize the overlay's geographic extent. */
+  @JsMethod
+  public native L setBounds(LatLngBounds bounds);
+
+  @JsMethod
+  public native LatLngBounds getBounds();
+
+  @JsMethod
+  public native LatLng getCenter();
+
+  @JsMethod
+  public native L setZIndex(double zIndex);
+
+  /** Common element type also supports the SVG and video subclasses. */
+  @JsMethod
+  public native Element getElement();
+
+  /** Image-specific view of getElement; use only for an image overlay. */
+  @JsMethod(name = "getElement")
+  public native HTMLImageElement getElementAsImage();
 
   /**
    * Sets the opacity of the overlay.
@@ -36,7 +63,7 @@ public class ImageOverlay implements Layer, Evented {
    * @return the L class
    */
   @JsMethod
-  public static native L setOpacity(double opacity);
+  public native L setOpacity(double opacity);
 
   /**
    * Brings the layer to the top of all overlays.
@@ -44,7 +71,7 @@ public class ImageOverlay implements Layer, Evented {
    * @return the L class
    */
   @JsMethod
-  public static native L bringToFront();
+  public native L bringToFront();
 
   /**
    * Brings the layer to the bottom of all overlays.
@@ -52,7 +79,7 @@ public class ImageOverlay implements Layer, Evented {
    * @return the L class
    */
   @JsMethod
-  public static native L bringToBack();
+  public native L bringToBack();
 
   /* (non-Javadoc)
    * @see com.gwidgets.api.leaflet.Layer#bindPopup(com.gwidgets.api.leaflet.elemental.HTMLElement, com.gwidgets.api.leaflet.options.PopupOptions)

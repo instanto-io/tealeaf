@@ -8,7 +8,6 @@
   <artifactId>leaflet-demo</artifactId>
   <properties>
     <maven.deploy.skip>true</maven.deploy.skip>
-    <leaflet.version>1.9.4</leaflet.version>
   </properties>
   <dependencies>
     <dependency>
@@ -104,16 +103,10 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/site/leaflet</outputDirectory>
+              <outputDirectory>${project.build.directory}/site</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${project.build.directory}/leaflet-assets/META-INF/resources/webjars/leaflet/${leaflet.version}/dist</directory>
-                </resource>
-                <resource>
-                  <directory>${project.build.directory}/leaflet-assets/META-INF/resources/webjars/leaflet/${leaflet.version}</directory>
-                  <includes>
-                    <include>LICENSE</include>
-                  </includes>
+                  <directory>${project.build.directory}/leaflet-assets/META-INF/resources</directory>
                 </resource>
               </resources>
             </configuration>

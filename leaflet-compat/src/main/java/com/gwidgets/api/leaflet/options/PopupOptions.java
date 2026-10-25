@@ -14,6 +14,7 @@ package com.gwidgets.api.leaflet.options;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.gwidgets.api.leaflet.Point;
+import elemental2.dom.HTMLElement;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
@@ -25,6 +26,22 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class PopupOptions {
+  /** Initial HTML content. Use trusted HTML or the element overload. */
+  @JsProperty private String content;
+
+  @JsProperty(name = "content")
+  private HTMLElement contentElement;
+
+  /** Read element content only when the element overload was used. */
+  @JsOverlay
+  public final HTMLElement getContentAsElement() {
+    return contentElement;
+  }
+
+  @JsOverlay
+  public final String getContent() {
+    return this.content;
+  }
 
   private PopupOptions() {}
 
@@ -197,6 +214,25 @@ public class PopupOptions {
 
   /** The Class Builder. */
   public static class Builder {
+    private String content;
+    private HTMLElement contentElement;
+
+    /**
+     * Initial HTML content. Use trusted HTML or the element overload. Omit to use Leaflet's
+     * default.
+     */
+    public Builder content(String content) {
+      this.content = content;
+      this.contentElement = null;
+      return this;
+    }
+
+    /** Initial DOM content; the node itself is passed to Leaflet. */
+    public Builder content(HTMLElement content) {
+      this.contentElement = content;
+      this.content = null;
+      return this;
+    }
 
     private Double maxWidth;
 
@@ -384,6 +420,9 @@ public class PopupOptions {
      */
     public PopupOptions build() {
       PopupOptions options = new PopupOptions();
+      if (this.content != null) options.content = this.content;
+      if (this.contentElement != null) options.contentElement = this.contentElement;
+
       if (this.maxWidth != null) options.maxWidth = this.maxWidth;
       if (this.minWidth != null) options.minWidth = this.minWidth;
       if (this.maxHeight != null) options.maxHeight = this.maxHeight;

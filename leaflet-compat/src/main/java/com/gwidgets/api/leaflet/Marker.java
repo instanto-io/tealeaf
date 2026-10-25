@@ -59,6 +59,14 @@ public class Marker implements Layer, Evented {
   @JsMethod
   public native L setIcon(Icon icon);
 
+  /** Returns the current icon, including a custom DivIcon. */
+  @JsMethod
+  public native Icon getIcon();
+
+  /** Returns the marker DOM element after it is added to the map. */
+  @JsMethod
+  public native HTMLElement getElement();
+
   /**
    * Sets the Z index offset.
    *

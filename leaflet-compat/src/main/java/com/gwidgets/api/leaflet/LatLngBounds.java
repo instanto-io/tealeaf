@@ -121,7 +121,7 @@ public class LatLngBounds {
    * @return true/false
    */
   @JsMethod
-  public native Boolean contains(LatLngBounds otherBounds);
+  public native boolean contains(LatLngBounds otherBounds);
 
   /**
    * Returns true if the rectangle contains the given point.
@@ -130,7 +130,7 @@ public class LatLngBounds {
    * @return true/false
    */
   @JsMethod
-  public native Boolean contains(LatLng latlng);
+  public native boolean contains(LatLng latlng);
 
   /**
    * Returns true if the rectangle intersects the given bounds.

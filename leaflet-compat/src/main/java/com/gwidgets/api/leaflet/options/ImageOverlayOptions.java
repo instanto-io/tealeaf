@@ -24,6 +24,37 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class ImageOverlayOptions {
+  /** Overlay stacking order. */
+  @JsProperty private double zIndex;
+
+  @JsOverlay
+  public final double getZIndex() {
+    return this.zIndex;
+  }
+
+  /** CSS class applied to the overlay element. */
+  @JsProperty private String className;
+
+  @JsOverlay
+  public final String getClassName() {
+    return this.className;
+  }
+
+  /** Fallback image URL used after an image loading error. */
+  @JsProperty private String errorOverlayUrl;
+
+  @JsOverlay
+  public final String getErrorOverlayUrl() {
+    return this.errorOverlayUrl;
+  }
+
+  /** Propagate mouse events to the map. */
+  @JsProperty private boolean bubblingMouseEvents;
+
+  @JsOverlay
+  public final boolean getBubblingMouseEvents() {
+    return this.bubblingMouseEvents;
+  }
 
   private ImageOverlayOptions() {}
 
@@ -81,6 +112,37 @@ public class ImageOverlayOptions {
 
   /** The Class Builder. */
   public static class Builder {
+    private Double zIndex;
+
+    /** Overlay stacking order. Omit to use Leaflet's default. */
+    public Builder zIndex(Double zIndex) {
+      this.zIndex = zIndex;
+      return this;
+    }
+
+    private String className;
+
+    /** CSS class applied to the overlay element. Omit to use Leaflet's default. */
+    public Builder className(String className) {
+      this.className = className;
+      return this;
+    }
+
+    private String errorOverlayUrl;
+
+    /** Fallback image URL used after an image loading error. Omit to use Leaflet's default. */
+    public Builder errorOverlayUrl(String errorOverlayUrl) {
+      this.errorOverlayUrl = errorOverlayUrl;
+      return this;
+    }
+
+    private Boolean bubblingMouseEvents;
+
+    /** Propagate mouse events to the map. Omit to use Leaflet's default. */
+    public Builder bubblingMouseEvents(Boolean bubblingMouseEvents) {
+      this.bubblingMouseEvents = bubblingMouseEvents;
+      return this;
+    }
 
     private Double opacity;
 
@@ -146,6 +208,11 @@ public class ImageOverlayOptions {
      */
     public ImageOverlayOptions build() {
       ImageOverlayOptions options = new ImageOverlayOptions();
+      if (this.zIndex != null) options.zIndex = this.zIndex;
+      if (this.className != null) options.className = this.className;
+      if (this.errorOverlayUrl != null) options.errorOverlayUrl = this.errorOverlayUrl;
+      if (this.bubblingMouseEvents != null) options.bubblingMouseEvents = this.bubblingMouseEvents;
+
       if (this.opacity != null) options.opacity = this.opacity;
       if (this.attribution != null) options.attribution = this.attribution;
       if (this.alt != null) options.alt = this.alt;

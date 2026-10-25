@@ -14,6 +14,7 @@ package com.gwidgets.api.leaflet.options;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.gwidgets.api.leaflet.Icon;
+import com.gwidgets.api.leaflet.Point;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
@@ -25,6 +26,45 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class MarkerOptions {
+  /** Pan the map while dragging near its edge. */
+  @JsProperty private boolean autoPan;
+
+  @JsOverlay
+  public final boolean getAutoPan() {
+    return this.autoPan;
+  }
+
+  /** Distance from the map edge before drag auto-pan starts, in pixels. */
+  @JsProperty private Point autoPanPadding;
+
+  @JsOverlay
+  public final Point getAutoPanPadding() {
+    return this.autoPanPadding;
+  }
+
+  /** Pixels to pan per animation frame during marker dragging. */
+  @JsProperty private double autoPanSpeed;
+
+  @JsOverlay
+  public final double getAutoPanSpeed() {
+    return this.autoPanSpeed;
+  }
+
+  /** Pan to keep the marker visible when it receives keyboard focus. */
+  @JsProperty private boolean autoPanOnFocus;
+
+  @JsOverlay
+  public final boolean getAutoPanOnFocus() {
+    return this.autoPanOnFocus;
+  }
+
+  /** Map pane used for the marker shadow. */
+  @JsProperty private String shadowPane;
+
+  @JsOverlay
+  public final String getShadowPane() {
+    return this.shadowPane;
+  }
 
   private MarkerOptions() {}
 
@@ -184,6 +224,51 @@ public class MarkerOptions {
 
   /** The Class Builder. */
   public static class Builder {
+    private Boolean autoPan;
+
+    /** Pan the map while dragging near its edge. Omit to use Leaflet's default. */
+    public Builder autoPan(Boolean autoPan) {
+      this.autoPan = autoPan;
+      return this;
+    }
+
+    private Point autoPanPadding;
+
+    /**
+     * Distance from the map edge before drag auto-pan starts, in pixels. Omit to use Leaflet's
+     * default.
+     */
+    public Builder autoPanPadding(Point autoPanPadding) {
+      this.autoPanPadding = autoPanPadding;
+      return this;
+    }
+
+    private Double autoPanSpeed;
+
+    /** Pixels to pan per animation frame during marker dragging. Omit to use Leaflet's default. */
+    public Builder autoPanSpeed(Double autoPanSpeed) {
+      this.autoPanSpeed = autoPanSpeed;
+      return this;
+    }
+
+    private Boolean autoPanOnFocus;
+
+    /**
+     * Pan to keep the marker visible when it receives keyboard focus. Omit to use Leaflet's
+     * default.
+     */
+    public Builder autoPanOnFocus(Boolean autoPanOnFocus) {
+      this.autoPanOnFocus = autoPanOnFocus;
+      return this;
+    }
+
+    private String shadowPane;
+
+    /** Map pane used for the marker shadow. Omit to use Leaflet's default. */
+    public Builder shadowPane(String shadowPane) {
+      this.shadowPane = shadowPane;
+      return this;
+    }
 
     private Icon icon;
 
@@ -353,6 +438,12 @@ public class MarkerOptions {
     public MarkerOptions build() {
 
       MarkerOptions options = new MarkerOptions();
+      if (this.autoPan != null) options.autoPan = this.autoPan;
+      if (this.autoPanPadding != null) options.autoPanPadding = this.autoPanPadding;
+      if (this.autoPanSpeed != null) options.autoPanSpeed = this.autoPanSpeed;
+      if (this.autoPanOnFocus != null) options.autoPanOnFocus = this.autoPanOnFocus;
+      if (this.shadowPane != null) options.shadowPane = this.shadowPane;
+
       if (this.icon != null) options.icon = this.icon;
       if (this.clickable != null) options.clickable = this.clickable;
       if (this.draggable != null) options.draggable = this.draggable;

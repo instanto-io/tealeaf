@@ -25,6 +25,13 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class TileLayerOptions {
+  /** Referrer policy applied to tile image requests. */
+  @JsProperty private String referrerPolicy;
+
+  @JsOverlay
+  public final String getReferrerPolicy() {
+    return this.referrerPolicy;
+  }
 
   public TileLayerOptions() {}
 
@@ -314,6 +321,13 @@ public class TileLayerOptions {
   }
 
   public static class Builder {
+    private String referrerPolicy;
+
+    /** Referrer policy applied to tile image requests. Omit to use Leaflet's default. */
+    public Builder referrerPolicy(String referrerPolicy) {
+      this.referrerPolicy = referrerPolicy;
+      return this;
+    }
 
     private Integer minZoom;
 
@@ -593,6 +607,8 @@ public class TileLayerOptions {
       // the ifs statement are for preventing the creation of undefined attributes => mimicking
       // original Leaflet behavior
       TileLayerOptions options = new TileLayerOptions();
+      if (this.referrerPolicy != null) options.referrerPolicy = this.referrerPolicy;
+
       if (this.minZoom != null) options.minZoom = this.minZoom;
       if (this.maxZoom != null) options.maxZoom = this.maxZoom;
       if (this.maxNativeZoom != null) options.maxNativeZoom = this.maxNativeZoom;

@@ -24,6 +24,29 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class ZoomPanOptions {
+  /** Animation duration in seconds. */
+  @JsProperty private double duration;
+
+  @JsOverlay
+  public final double getDuration() {
+    return this.duration;
+  }
+
+  /** Panning animation easing factor. */
+  @JsProperty private double easeLinearity;
+
+  @JsOverlay
+  public final double getEaseLinearity() {
+    return this.easeLinearity;
+  }
+
+  /** Suppress the movestart event for panning. */
+  @JsProperty private boolean noMoveStart;
+
+  @JsOverlay
+  public final boolean getNoMoveStart() {
+    return this.noMoveStart;
+  }
 
   private ZoomPanOptions() {}
 
@@ -78,6 +101,29 @@ public class ZoomPanOptions {
 
   /** The Class Builder. */
   public static class Builder {
+    private Double duration;
+
+    /** Animation duration in seconds. Omit to use Leaflet's default. */
+    public Builder duration(Double duration) {
+      this.duration = duration;
+      return this;
+    }
+
+    private Double easeLinearity;
+
+    /** Panning animation easing factor. Omit to use Leaflet's default. */
+    public Builder easeLinearity(Double easeLinearity) {
+      this.easeLinearity = easeLinearity;
+      return this;
+    }
+
+    private Boolean noMoveStart;
+
+    /** Suppress the movestart event for panning. Omit to use Leaflet's default. */
+    public Builder noMoveStart(Boolean noMoveStart) {
+      this.noMoveStart = noMoveStart;
+      return this;
+    }
 
     /** The reset. */
     private Boolean reset = false;
@@ -145,6 +191,10 @@ public class ZoomPanOptions {
      */
     public ZoomPanOptions build() {
       ZoomPanOptions options = new ZoomPanOptions();
+      if (this.duration != null) options.duration = this.duration;
+      if (this.easeLinearity != null) options.easeLinearity = this.easeLinearity;
+      if (this.noMoveStart != null) options.noMoveStart = this.noMoveStart;
+
       if (this.animate != null) options.animate = this.animate;
       if (this.pan != null) options.pan = this.pan;
       if (this.zoom != null) options.zoom = this.zoom;

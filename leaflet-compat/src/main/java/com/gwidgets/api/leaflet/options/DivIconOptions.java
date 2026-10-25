@@ -14,6 +14,7 @@ package com.gwidgets.api.leaflet.options;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.gwidgets.api.leaflet.Point;
+import elemental2.dom.HTMLElement;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
@@ -33,11 +34,21 @@ public class DivIconOptions {
 
   @JsProperty private Point iconAnchor;
 
-  @JsProperty private Point popUpAnchor;
+  @JsProperty(name = "popupAnchor")
+  private Point popUpAnchor;
 
   @JsProperty private String className;
 
   @JsProperty private String html;
+
+  @JsProperty(name = "html")
+  private HTMLElement htmlElement;
+
+  /** Read element content only when the element overload was used. */
+  @JsOverlay
+  public final HTMLElement getHtmlAsElement() {
+    return htmlElement;
+  }
 
   /*****************************************
    ********************************************/
@@ -190,6 +201,7 @@ public class DivIconOptions {
     private String className;
 
     private String html;
+    private HTMLElement htmlElement;
 
     private Point bgPos;
 
@@ -214,6 +226,9 @@ public class DivIconOptions {
      *
      * @param iconUrl the icon url
      */
+    /** Creates a DivIcon builder; HTML markers do not require an image URL. */
+    public Builder() {}
+
     public Builder(String iconUrl) {
       this.iconUrl = iconUrl;
     }
@@ -248,6 +263,11 @@ public class DivIconOptions {
      * @param popUpAnchor the pop up anchor
      * @return the builder
      */
+    /** Leaflet spelling; the original popUpAnchor method is retained. */
+    public Builder popupAnchor(Point popupAnchor) {
+      return popUpAnchor(popupAnchor);
+    }
+
     public Builder popUpAnchor(Point popUpAnchor) {
       this.popUpAnchor = popUpAnchor;
       return this;
@@ -272,6 +292,14 @@ public class DivIconOptions {
      */
     public Builder html(String html) {
       this.html = html;
+      this.htmlElement = null;
+      return this;
+    }
+
+    /** Use a DOM node as marker content, preserving its event handlers. */
+    public Builder html(HTMLElement html) {
+      this.htmlElement = html;
+      this.html = null;
       return this;
     }
 
@@ -328,6 +356,7 @@ public class DivIconOptions {
       if (this.popUpAnchor != null) options.popUpAnchor = this.popUpAnchor;
       if (this.className != null) options.className = this.className;
       if (this.html != null) options.html = this.html;
+      if (this.htmlElement != null) options.htmlElement = this.htmlElement;
       if (this.iconUrl != null) options.iconUrl = this.iconUrl;
       if (this.bgPos != null) options.bgPos = this.bgPos;
       if (this.iconRetinaUrl != null) options.iconRetinaUrl = this.iconRetinaUrl;

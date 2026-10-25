@@ -31,8 +31,12 @@ import com.gwidgets.api.leaflet.options.RendererOptions;
 import com.gwidgets.api.leaflet.options.TileLayerOptions;
 import com.gwidgets.api.leaflet.options.TileLayerWMSOptions;
 import com.gwidgets.api.leaflet.options.TooltipOptions;
+import com.gwidgets.api.leaflet.options.VideoOverlayOptions;
 import elemental2.core.JsObject;
 import elemental2.dom.HTMLElement;
+import elemental2.dom.HTMLImageElement;
+import elemental2.dom.HTMLVideoElement;
+import elemental2.svg.SVGElement;
 import jsinterop.annotations.JsConstructor;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsPackage;
@@ -50,6 +54,38 @@ import jsinterop.annotations.JsType;
 public class L {
 
   private L() {}
+
+  /** Video overlay loaded from one URL. */
+  public static native VideoOverlay videoOverlay(
+      String url, LatLngBounds bounds, VideoOverlayOptions options);
+
+  /** Video overlay with alternative source formats. */
+  public static native VideoOverlay videoOverlay(
+      String[] urls, LatLngBounds bounds, VideoOverlayOptions options);
+
+  /** Reuse an existing video element and its playback configuration. */
+  public static native VideoOverlay videoOverlay(
+      HTMLVideoElement video, LatLngBounds bounds, VideoOverlayOptions options);
+
+  /** Geographic SVG overlay; the element must have a viewBox. */
+  public static native SVGOverlay svgOverlay(
+      SVGElement svg, LatLngBounds bounds, ImageOverlayOptions options);
+
+  /** Reuse an existing image element. */
+  public static native ImageOverlay imageOverlay(
+      HTMLImageElement image, LatLngBounds bounds, ImageOverlayOptions options);
+
+  /** Create a positioned popup using Leaflet 1.9's coordinate-first factory. */
+  public static native Popup popup(LatLng latLng, PopupOptions options);
+
+  /** Create a positioned tooltip using Leaflet 1.9's coordinate-first factory. */
+  public static native Tooltip tooltip(LatLng latLng, TooltipOptions options);
+
+  /** Create an independent popup using content options. */
+  public static native Popup popup(PopupOptions options);
+
+  /** Create an independent tooltip using content options. */
+  public static native Tooltip tooltip(TooltipOptions options);
 
   /**
    * The central class of the API — it is used to create a map on a page and manipulate it.

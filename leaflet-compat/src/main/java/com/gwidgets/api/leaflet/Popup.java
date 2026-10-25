@@ -93,7 +93,7 @@ public class Popup extends DivOverlay implements Layer, Evented {
    * @return true if popup is open, false otherwise
    */
   @JsMethod
-  public native Boolean isOpen();
+  public native boolean isOpen();
 
   /**
    * Updates the popup content, layout and position. Useful for updating the popup after something
@@ -110,7 +110,7 @@ public class Popup extends DivOverlay implements Layer, Evented {
    * @return the L class
    */
   @JsMethod
-  public native L getLatLng();
+  public native LatLng getLatLng();
 
   /* (non-Javadoc)
    * @see com.gwidgets.api.leaflet.Layer#bindPopup(com.gwidgets.api.leaflet.elemental.HTMLElement, com.gwidgets.api.leaflet.options.PopupOptions)

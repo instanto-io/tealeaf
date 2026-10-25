@@ -2,19 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tealeaf · Leaflet for TeaVM</title>
-<link rel="stylesheet" href="leaflet/leaflet.css">
-<style>
-*{box-sizing:border-box}body{margin:0;background:#f4f6fb;color:#19243a;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:48px auto;padding:0 28px}h1{font-size:38px;letter-spacing:-1px;margin-bottom:8px}p{color:#506078}#map{height:480px;border:1px solid #dbe2ef;border-radius:16px;margin:26px 0;background:#e2e9ed}.controls{display:flex;gap:10px;flex-wrap:wrap}button{font:inherit;padding:9px 16px;border:1px solid #cbd5e5;border-radius:8px;background:white;cursor:pointer}button:first-child{background:#4f46e5;color:white;border-color:#4f46e5}button:hover{filter:brightness(.94)}button:focus-visible{outline:3px solid #14b8a6;outline-offset:3px}.metrics{display:flex;gap:24px;flex-wrap:wrap;font-size:14px}footer{margin-top:24px;color:#506078;font-size:13px}#position{font-variant-numeric:tabular-nums;font-size:14px}@media(max-width:600px){main{margin:24px auto;padding:0 16px}h1{font-size:30px}#map{height:380px}}
-</style>
+<meta name="description" content="Explore Tealeaf: interactive Leaflet maps written in Java and compiled with TeaVM. Markers, routes, shapes and GeoJSON examples.">
+<title>Tealeaf · Interactive map showcase</title>
+<link rel="stylesheet" href="showcase.css">
 </head>
-<body><main>
-<h1>Tealeaf · Leaflet meets TeaVM</h1>
-<p>Explore London. Move the marker, click the map, or release it and start again.</p>
-<div id="map" aria-label="Interactive map of London"></div>
-<div class="controls"><button id="move">Move marker</button><button id="listen">Pause clicks</button><button id="destroy">Destroy map</button><button id="recreate">Recreate map</button></div>
-<p id="status" role="status" aria-live="polite">Loading…</p>
-<div class="metrics"><span id="clicks">Map clicks: 0</span><span id="zoom">Zoom: —</span><span id="unloads">Maps released: 0</span></div>
-<p id="position">Click the map to read a position in Java.</p>
-<footer>gwty-leaflet Java API · Leaflet 1.9.4 · TeaVM<br>Map tiles require an internet connection. JavaScript, styles and marker images are served locally.</footer>
-</main><script src="leaflet/leaflet.js"></script><script src="maps.js"></script><script>main();</script></body></html>
+<body>
+<header class="topbar"><a class="brand" href="./"><span class="brand-icon" aria-hidden="true">↗</span> tealeaf<span class="brand-label">/ showcase</span></a><a href="https://github.com/instanto-io/tealeaf">View source <span aria-hidden="true">↗</span></a></header>
+<main>
+<section class="intro"><div><p class="eyebrow">JAVA MEETS THE MAP</p><h1>A little Java.<br>A world to explore.</h1><p class="lede">Leaflet maps, powered by TeaVM. Explore the examples, play with the layers, and see the Java behind them.</p></div><div class="intro-note"><span class="live-dot"></span> Interactive examples<span>Leaflet 1.9.4 · TeaVM · Java</span></div></section>
+<div class="workspace">
+<aside class="sidebar"><p class="eyebrow">EXPLORE THE API</p><nav aria-label="Map examples">
+<button id="scene-0" class="scene" aria-pressed="true"><span class="scene-number">01</span><span><strong>Markers &amp; events</strong><small>Start with the essentials</small></span><span aria-hidden="true">↗</span></button>
+<button id="scene-1" class="scene" aria-pressed="false"><span class="scene-number">02</span><span><strong>A river walk</strong><small>Routes, stops &amp; bounds</small></span><span aria-hidden="true">↗</span></button>
+<button id="scene-2" class="scene" aria-pressed="false"><span class="scene-number">03</span><span><strong>Service areas</strong><small>Polygons, circles &amp; layers</small></span><span aria-hidden="true">↗</span></button>
+<button id="scene-3" class="scene" aria-pressed="false"><span class="scene-number">04</span><span><strong>GeoJSON</strong><small>From data to geography</small></span><span aria-hidden="true">↗</span></button>
+<button id="scene-4" class="scene" aria-pressed="false"><span class="scene-number">05</span><span><strong>Custom markers</strong><small>Images, HTML &amp; live DOM</small></span><span aria-hidden="true">↗</span></button>
+<button id="scene-5" class="scene" aria-pressed="false"><span class="scene-number">06</span><span><strong>SVG &amp; video</strong><small>Media in geographic bounds</small></span><span aria-hidden="true">↗</span></button>
+</nav><div class="field-note"><span class="eyebrow">FIELD NOTES</span><p id="scene-details">Choose an example to explore.</p></div></aside>
+<section class="example" aria-labelledby="scene-title"><div class="example-heading"><div><h2 id="scene-title">Start with a map</h2><p id="scene-description">Loading the Java application…</p></div><span class="location">London, UK</span></div>
+<div class="map-wrap"><div id="map" aria-label="Interactive map of London"></div><div class="map-empty">Choose Recreate map to continue exploring.</div></div>
+<div class="map-tools"><div class="controls"><button id="fit">Fit features</button><button id="overlay" aria-pressed="true">Hide features</button><button id="tiles" aria-pressed="true">Hide basemap</button></div><span id="zoom">Zoom: —</span></div>
+<div class="interaction"><div class="controls"><button id="move">Move marker</button><button id="listen">Pause clicks</button><button id="swap" disabled>Swap icon</button><button id="note">Open note</button></div><p id="position">Click the map to read a position in Java.</p></div>
+<div class="map-tools"><div class="controls"><button id="fly">Fly to river</button><button id="fly-bounds">Fly to features</button><button id="stop">Stop flight</button></div></div>
+</section></div>
+<div class="below"><section class="code-panel"><div class="panel-heading"><h2>The Java behind it</h2><span>API excerpt</span></div><pre><code id="code">Loading…</code></pre><a href="https://github.com/instanto-io/tealeaf/tree/main/leaflet-demo/src/main/java/io/instanto/compat/maps">Explore the full example source ↗</a></section>
+<section class="lifecycle"><p class="eyebrow">BUILT TO COME AND GO</p><h2>Explore the lifecycle</h2><p>Release the map and its listeners, then create it again. Each example works with the same lifecycle controls.</p><div class="controls"><button id="destroy">Destroy map</button><button id="recreate" class="primary">Recreate map</button></div><p id="status" role="status" aria-live="polite">Loading…</p><div class="metrics"><span id="clicks">Map clicks: 0</span><span id="unloads">Maps released: 0</span></div></section></div>
+<footer><span>Tealeaf · The gwty-leaflet Java API for TeaVM</span><span>Map tiles by OpenStreetMap. Tiles need a connection; code and example data are served locally.</span></footer>
+</main><script src="maps.js"></script><script>main();</script>
+</body></html>

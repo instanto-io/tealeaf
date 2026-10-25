@@ -15,6 +15,7 @@ import com.gwidgets.api.leaflet.events.EventCallback;
 import com.gwidgets.api.leaflet.events.MouseEvent;
 import com.gwidgets.api.leaflet.options.FitBoundsOptions;
 import com.gwidgets.api.leaflet.options.LocateOptions;
+import com.gwidgets.api.leaflet.options.PanInsideOptions;
 import com.gwidgets.api.leaflet.options.PanOptions;
 import com.gwidgets.api.leaflet.options.PopupOptions;
 import com.gwidgets.api.leaflet.options.ZoomOptions;
@@ -71,6 +72,22 @@ public class Map implements Evented {
    */
   @JsMethod
   public native L setView(LatLng center, double zoom, ZoomPanOptions options);
+
+  /** Smoothly pan and zoom to a position. */
+  @JsMethod
+  public native L flyTo(LatLng center, double zoom, ZoomPanOptions options);
+
+  /** Smoothly pan and zoom to geographic bounds. */
+  @JsMethod
+  public native L flyToBounds(LatLngBounds bounds, FitBoundsOptions options);
+
+  /** Pan by the minimum distance needed to keep a point inside padded bounds. */
+  @JsMethod
+  public native L panInside(LatLng latLng, PanInsideOptions options);
+
+  /** Stop an active pan or fly animation. */
+  @JsMethod
+  public native L stop();
 
   /**
    * Sets the zoom of the map.
@@ -332,7 +349,7 @@ public class Map implements Evented {
    * @return true/false
    */
   @JsMethod
-  public native Boolean hasLayer(Layer layer);
+  public native boolean hasLayer(Layer layer);
 
   /**
    * Iterates over the layers of the map, optionally specifying context of the iterator function.

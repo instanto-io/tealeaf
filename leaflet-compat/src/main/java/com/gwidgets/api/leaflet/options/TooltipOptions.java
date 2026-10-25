@@ -14,6 +14,7 @@ package com.gwidgets.api.leaflet.options;
 import static jsinterop.annotations.JsPackage.GLOBAL;
 
 import com.gwidgets.api.leaflet.Point;
+import elemental2.dom.HTMLElement;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
@@ -25,6 +26,22 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class TooltipOptions {
+  /** Initial HTML content. Use trusted HTML or the element overload. */
+  @JsProperty private String content;
+
+  @JsProperty(name = "content")
+  private HTMLElement contentElement;
+
+  /** Read element content only when the element overload was used. */
+  @JsOverlay
+  public final HTMLElement getContentAsElement() {
+    return contentElement;
+  }
+
+  @JsOverlay
+  public final String getContent() {
+    return this.content;
+  }
 
   @JsProperty private String pane;
 
@@ -113,6 +130,25 @@ public class TooltipOptions {
   }
 
   public static class Builder {
+    private String content;
+    private HTMLElement contentElement;
+
+    /**
+     * Initial HTML content. Use trusted HTML or the element overload. Omit to use Leaflet's
+     * default.
+     */
+    public Builder content(String content) {
+      this.content = content;
+      this.contentElement = null;
+      return this;
+    }
+
+    /** Initial DOM content; the node itself is passed to Leaflet. */
+    public Builder content(HTMLElement content) {
+      this.contentElement = content;
+      this.content = null;
+      return this;
+    }
 
     private String pane;
 
@@ -218,6 +254,8 @@ public class TooltipOptions {
 
     public TooltipOptions build() {
       TooltipOptions toolTipOptions = new TooltipOptions();
+      if (this.content != null) toolTipOptions.content = this.content;
+      if (this.contentElement != null) toolTipOptions.contentElement = this.contentElement;
       if (this.pane != null) toolTipOptions.pane = this.pane;
       if (this.offset != null) toolTipOptions.offset = this.offset;
       if (this.direction != null) toolTipOptions.direction = this.direction;

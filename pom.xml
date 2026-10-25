@@ -28,6 +28,7 @@
   </scm>
   <!-- Snapshot publication is inherited from instanto-org-pom via instanto-teavm-pom. -->
   <properties>
+    <leaflet.version>1.9.4</leaflet.version>
     <compat.version>0.1.0-SNAPSHOT</compat.version>
     <spotbugs.skip>false</spotbugs.skip>
     <maven.compiler.release>17</maven.compiler.release>

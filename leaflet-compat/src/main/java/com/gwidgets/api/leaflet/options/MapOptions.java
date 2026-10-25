@@ -29,6 +29,14 @@ import jsinterop.annotations.JsType;
  */
 @JsType(isNative = true, namespace = GLOBAL, name = "Object")
 public class MapOptions {
+  /** Simulate contextmenu on a long press, notably on mobile Safari. */
+  @JsProperty private boolean tapHold;
+
+  @JsOverlay
+  public final boolean getTapHold() {
+    return this.tapHold;
+  }
+
   private MapOptions() {}
 
   /*****************************************
@@ -509,6 +517,16 @@ public class MapOptions {
 
   /** The Class Builder. */
   public static class Builder {
+    private Boolean tapHold;
+
+    /**
+     * Simulate contextmenu on a long press, notably on mobile Safari. Omit to use Leaflet's
+     * default.
+     */
+    public Builder tapHold(Boolean tapHold) {
+      this.tapHold = tapHold;
+      return this;
+    }
 
     LatLng center;
 
@@ -1055,6 +1073,8 @@ public class MapOptions {
     public MapOptions build() {
 
       MapOptions options = new MapOptions();
+      if (this.tapHold != null) options.tapHold = this.tapHold;
+
       if (this.center != null) options.center = this.center;
       if (this.zoom != null) options.zoom = this.zoom;
       if (this.minZoom != null) options.minZoom = this.minZoom;

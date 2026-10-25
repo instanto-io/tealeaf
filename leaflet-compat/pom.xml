@@ -12,6 +12,11 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>leaflet</artifactId>
+      <version>${leaflet.version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.instanto</groupId>
       <artifactId>elemental2-compat</artifactId>
       <version>${elemental2.compat.version}</version>
