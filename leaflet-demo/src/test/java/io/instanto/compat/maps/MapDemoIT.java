@@ -27,6 +27,21 @@ public class MapDemoIT {
   @Test
   public void rendersEventsAndReleasesMaps() throws Exception {
     Path site = Path.of("target/site").toAbsolutePath().normalize();
+    assertEquals(
+        Files.readString(Path.of("../LICENSE")),
+        Files.readString(site.resolve("legal/project/LICENSE")));
+    assertEquals(
+        Files.readString(Path.of("../NOTICE")),
+        Files.readString(site.resolve("legal/project/NOTICE")));
+    assertEquals(
+        Files.readString(Path.of("../leaflet-compat/src/main/resources/META-INF/LICENSE")),
+        Files.readString(site.resolve("legal/leaflet-compat/LICENSE")));
+    assertEquals(
+        Files.readString(Path.of("../leaflet-compat/src/main/resources/META-INF/NOTICE")),
+        Files.readString(site.resolve("legal/leaflet-compat/NOTICE")));
+    assertTrue(Files.isRegularFile(site.resolve("legal/leaflet-compat/upstream.json")));
+    assertTrue(Files.isRegularFile(site.resolve("legal/runtime/index.html")));
+    assertTrue(Files.isRegularFile(site.resolve("webjars/leaflet/1.9.4/LICENSE")));
     var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
     server.createContext(
         "/",
@@ -34,6 +49,7 @@ public class MapDemoIT {
           String request = exchange.getRequestURI().getPath();
           Path file =
               site.resolve(request.equals("/") ? "index.html" : request.substring(1)).normalize();
+          if (Files.isDirectory(file)) file = file.resolve("index.html");
           if (!file.startsWith(site) || !Files.isRegularFile(file)) {
             exchange.sendResponseHeaders(404, -1);
             exchange.close();
@@ -316,6 +332,21 @@ public class MapDemoIT {
       page.locator("#recreate").click();
       assertEquals(1, page.locator("video.survey-video").count());
       assertTrue(errors.toString(), errors.isEmpty());
+      page.locator("footer a[href='legal/']").click();
+      assertEquals("Licenses & notices", page.locator("h1").textContent());
+      assertEquals(7, page.locator("li a").count());
+      page.screenshot(
+          new Page.ScreenshotOptions()
+              .setPath(Path.of("target/licenses-" + engine + ".png"))
+              .setFullPage(true));
+      assertEquals(1, page.locator("a[href='runtime/index.html']").count());
+      for (int i = 0; i < page.locator("li a").count(); i++) {
+        String href = page.locator("li a").nth(i).getAttribute("href");
+        APIResponse response =
+            page.request().get(java.net.URI.create(page.url()).resolve(href).toString());
+        assertEquals("Missing packaged legal document: " + href, 200, response.status());
+        response.dispose();
+      }
       page.navigate("http://127.0.0.1:" + server.getAddress().getPort() + "/?verify-loader-error");
       page.waitForFunction("document.body.dataset.loaderError");
       assertTrue(

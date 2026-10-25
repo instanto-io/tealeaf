@@ -205,3 +205,13 @@ notices are retained. [upstream.json](leaflet-compat/upstream.json) records the
 source archive and SHA-256. [NOTICE](NOTICE) identifies the fork and local changes.
 Leaflet 1.9.4 is a transitive WebJar dependency under its upstream BSD-2-Clause
 license; its license is retained in the demo WebJar layout. See [LICENSE](LICENSE).
+
+The showcase's **Licenses & notices** link opens its packaged `legal/` page, with
+the project and API module licenses/notices and the pinned upstream source record.
+Inherited Java files that differ from that archive carry local modification
+notices, including files changed only by formatting. Original notices and both
+inherited license texts are retained. This is not a complete dependency audit.
+
+The runtime inventory at `leaflet-demo/src/main/webapp/legal/runtime/` contains
+pinned license/notice copies and provenance hashes. Refresh those static copies
+and their provenance when upgrading the corresponding runtime dependencies.

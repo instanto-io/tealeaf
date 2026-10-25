@@ -1,3 +1,8 @@
+/*
+ * Modified for Tealeaf in 2026 from gwty-leaflet 1.2.1:
+ * source formatting and Java/Leaflet binding changes for TeaVM.
+ * Existing upstream notices are retained. See NOTICE and the module's upstream.json.
+ */
 package com.gwidgets.api.leaflet;
 
 import com.gwidgets.api.leaflet.events.EventCallback;

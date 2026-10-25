@@ -1,5 +1,25 @@
-Based on gwty-leaflet 1.2.1, Copyright 2016 G-Widgets.
-https://github.com/gwidgets/gwty-leaflet
+Tealeaf
+Copyright 2026 Carl Stainton
 
-This distribution contains local API corrections, Leaflet 1.9.4 additions, runtime resource loading and TeaVM adaptation.
-See the module README for provenance, changes, and tested scope.
+Based on gwty-leaflet 1.2.1, Copyright 2016 G-Widgets, by Zakaria Amine
+and the GWidgets contributors, under the Apache License, Version 2.0.
+Upstream: https://github.com/gwidgets/gwty-leaflet
+Baseline: com.gwidgets:gwty-leaflet:1.2.1:sources (82 Java files).
+The module's upstream.json records the archive URL and verified SHA-256.
+
+Tealeaf is an independently maintained fork. Local changes include source
+formatting, TeaVM interoperability corrections, callback removal, native
+namespaces and primitive boundaries, Leaflet API additions, custom markers,
+SVG/video overlays, animated navigation, runtime resource loading and a showcase.
+Modified inherited source files carry a modification notice and retain their
+original notices. Build-time source adaptation may make additional changes.
+
+The module LICENSE retains the gwty-leaflet Apache 2.0 license text and its
+G-Widgets copyright appendix. The repository root LICENSE retains the inherited
+Apache 2.0 text with its Dominokit copyright appendix. That inherited attribution
+has not been replaced with a claim of ownership by Tealeaf.
+
+Leaflet 1.9.4 is distributed separately as a transitive WebJar dependency under
+its upstream BSD-2-Clause license. Its LICENSE remains in the WebJar and in the
+showcase's webjars/leaflet/1.9.4/ directory. Third-party dependencies retain their
+own license terms and notices; this notice is not a complete dependency audit.

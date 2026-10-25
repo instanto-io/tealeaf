@@ -112,6 +112,36 @@
             </configuration>
           </execution>
           <execution>
+            <id>project-legal</id>
+            <phase>prepare-package</phase>
+            <goals><goal>copy-resources</goal></goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/site/legal/project</outputDirectory>
+              <resources><resource>
+                <directory>${project.basedir}/..</directory>
+                <includes><include>LICENSE</include><include>NOTICE</include></includes>
+              </resource></resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>leaflet-api-legal</id>
+            <phase>prepare-package</phase>
+            <goals><goal>copy-resources</goal></goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/site/legal/leaflet-compat</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../leaflet-compat/src/main/resources/META-INF</directory>
+                  <includes><include>LICENSE</include><include>NOTICE</include></includes>
+                </resource>
+                <resource>
+                  <directory>${project.basedir}/../leaflet-compat</directory>
+                  <includes><include>upstream.json</include></includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
             <id>host-page</id>
             <phase>prepare-package</phase>
             <goals>

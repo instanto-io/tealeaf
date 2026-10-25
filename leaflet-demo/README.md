@@ -78,3 +78,17 @@ are two encodings (VP8 and H.264) of a four-second, silent, generated animation
 third-party footage. These assets are distributed under this repository's Apache 2.0
 license. The animation illustrates bounds and playback; it is not real survey data.
 SVG markup and DOM content are built from local, trusted example data.
+
+## Packaged notices
+
+The footer's Licenses & notices link opens `legal/index.html`. Maven copies the
+root `LICENSE`/`NOTICE` to `legal/project/`, the API module's originals to
+`legal/leaflet-compat/`, and its `upstream.json` beside them. Leaflet's BSD license
+remains at its WebJar path. Browser contracts check these copies and the visible
+link. The legal page also links the runtime license and provenance inventory at
+`legal/runtime/index.html`. It describes the packaged inventory without claiming
+a complete audit.
+
+Runtime license copies are pinned static resources. When a runtime dependency
+version changes, refresh `src/main/webapp/legal/runtime/` and its provenance
+hashes before publishing a new showcase build.

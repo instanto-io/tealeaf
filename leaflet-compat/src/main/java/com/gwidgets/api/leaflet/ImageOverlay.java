@@ -1,3 +1,8 @@
+/*
+ * Modified for Tealeaf in 2026 from gwty-leaflet 1.2.1:
+ * source formatting and Java/Leaflet binding changes for TeaVM.
+ * Existing upstream notices are retained. See NOTICE and the module's upstream.json.
+ */
 /**
  * Copyright 2016 G-Widgets Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain a copy of the License at
