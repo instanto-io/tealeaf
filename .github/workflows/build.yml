@@ -42,7 +42,7 @@ jobs:
       - name: Show browser test failures
         if: failure()
         run: |
-          find leaflet-demo/target/failsafe-reports -name '*.txt' -exec cat {} + 2>/dev/null || true
+          find leaflet-demo/target/failsafe-reports leaflet-gwt-demo/target/failsafe-reports -name '*.txt' -exec cat {} + 2>/dev/null || true
       - name: Remove the job-local Maven cache
         if: always()
         run: rm -rf -- "$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"

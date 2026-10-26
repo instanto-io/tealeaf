@@ -334,7 +334,8 @@ public class MapDemoIT {
       assertTrue(errors.toString(), errors.isEmpty());
       page.locator("footer a[href='legal/']").click();
       assertEquals("Licenses & notices", page.locator("h1").textContent());
-      assertEquals(7, page.locator("li a").count());
+      assertEquals(8, page.locator("li a").count());
+      assertEquals(1, page.locator("a[href='runtime/gwt-2.13.1/COPYING']").count());
       page.screenshot(
           new Page.ScreenshotOptions()
               .setPath(Path.of("target/licenses-" + engine + ".png"))

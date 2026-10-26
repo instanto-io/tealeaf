@@ -1,0 +1,1 @@
+<module rename-to="maps"><inherits name="com.gwidgets.Leaflet"/><source path="maps"/><entry-point class="io.instanto.compat.maps.GwtEntry"/></module>

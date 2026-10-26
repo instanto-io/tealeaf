@@ -2,7 +2,9 @@
 
 This module maintains 82 Java sources from gwty-leaflet 1.2.1 plus classes for Leaflet 1.9.4 additions and a runtime loader. The build adapts
 JsInterop declarations through `gwt-resources-compat-maven-plugin` and compiles
-`target/teavm-sources`. Edit `src/main/java`, never the generated copy.
+`target/teavm-sources`. The `leaflet-gwt` artifact packages and compiles the same
+canonical sources directly with GWT 2.13.1. Edit `src/main/java`, never the generated
+copy. Both builds run the same showcase contracts in Chromium and WebKit.
 
 ## Initialize a map
 

@@ -48,7 +48,8 @@ keep library-specific API corrections and examples in this repository.
 ## Continuous integration and publication
 
 Every push to `main`, trusted pull request and manual workflow run verifies the
-complete reactor, including the Chromium and WebKit contracts in `leaflet-demo`.
+complete reactor, including the Chromium and WebKit contracts in `leaflet-demo` and
+`leaflet-gwt-demo`.
 CI uses JDK 21, the browser-equipped Instanto container runners, and a fresh Maven
 repository so locally installed snapshots cannot hide missing dependencies.
 Fork pull requests need a maintainer to move the reviewed change to a trusted branch.
@@ -60,7 +61,7 @@ through the shared `instanto-poms` Maven workflow. The parent chain is
 `FORGEJO_PACKAGE_USER` and a package-write `FORGEJO_PACKAGE_TOKEN` (or
 `FORGEJO_PACKAGES_TOKEN`). Secrets are supplied by GitHub, never stored in the POM.
 
-Publication includes the parent POM and `leaflet-compat` artifacts. The full demo is
+Publication includes the parent POM, `leaflet-compat` and `leaflet-gwt` artifacts. The full demo is
 built and tested, but retains `maven.deploy.skip`: its `target/site` is a static
 website, not a library release. This workflow does not deploy the website.
 A manual run on `main` repeats verification before publishing; pull requests and

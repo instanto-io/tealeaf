@@ -1,6 +1,6 @@
 # Tealeaf
 
-Tealeaf provides Java bindings for **Leaflet 1.9.4** in TeaVM applications. It is
+Tealeaf provides Java bindings for **Leaflet 1.9.4** in GWT and TeaVM applications. It is
 based on **gwty-leaflet 1.2.1**, created by Zakaria Amine and the GWidgets
 contributors, and keeps the `com.gwidgets.api.leaflet` packages, `L` factories
 and option builders.
@@ -20,7 +20,12 @@ tests cover the features described here; other inherited APIs still need review.
 </dependency>
 ```
 
-Use this in a TeaVM application with the Instanto compatibility toolchain.
+Use `leaflet-compat` in a TeaVM application with the Instanto compatibility
+toolchain. For GWT 2.13.1, use `leaflet-gwt` instead and inherit
+`com.gwidgets.Leaflet` in your GWT module. Both artifacts compile the same
+GWT/JsInterop sources. TeaVM uses the shared source adapter and the GWT,
+Elemental2 and JsInterop compatibility implementations; no parallel handwritten
+TeaVM API is maintained. Choose one artifact for your compiler.
 The coordinates use the current alpha snapshot, which can be installed from
 source. Maven Central publication is planned. This artifact replaces `com.gwidgets:gwty-leaflet`; both libraries define the same Java
 classes and should not be included together.
@@ -183,7 +188,9 @@ mvn clean verify
 ```
 
 `mvn install` also installs the alpha artifacts into your local Maven repository.
-The static site is written to `leaflet-demo/target/site`. See
+The same showcase and browser contracts run on GWT 2.13.1 and TeaVM in Chromium
+and WebKit. The TeaVM site is written to `leaflet-demo/target/site`, and the GWT
+site to `leaflet-gwt-demo/target/site`. See
 [Development](DEVELOPMENT.md) for browser setup and the
 [demo guide](leaflet-demo/README.md) for hosting details.
 

@@ -46,7 +46,10 @@
     <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
     <teavm.junit.js.runner>browser-chrome</teavm.junit.js.runner>
   </properties>
+  <dependencyManagement><dependencies><dependency><groupId>com.google.jsinterop</groupId><artifactId>jsinterop-annotations</artifactId><version>2.0.2</version></dependency></dependencies></dependencyManagement>
   <modules>
+    <module>leaflet-gwt</module>
+    <module>leaflet-gwt-demo</module>
     <module>leaflet-compat</module>
     <module>leaflet-demo</module>
   </modules>
