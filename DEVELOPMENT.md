@@ -13,9 +13,8 @@ this repository. In a sibling checkout, install the compatibility reactor with:
 mvn -f ../teavm-compat/pom.xml install
 ```
 
-The first build needs access to the configured Maven repositories. Parent and
-TeaVM snapshot resolution uses the same Maven settings as the other Instanto
-ports. GitHub source publication does not publish these Maven artifacts.
+Install the matching parent, toolchain and compatibility snapshots locally before
+building Tealeaf. Maven Central publication is planned.
 
 ```sh
 mvn clean verify
@@ -55,11 +54,8 @@ repository so locally installed snapshots cannot hide missing dependencies.
 Fork pull requests need a maintainer to move the reviewed change to a trusted branch.
 
 After verification succeeds on `main`, the same workflow revision runs `clean deploy`
-through the shared `instanto-poms` Maven workflow. The parent chain is
-`tealeaf-parent` → `instanto-teavm-pom` → `instanto-org-pom`; its
-`forgejo-instanto` snapshot repository is packages.instanto.io. The workflow needs
-`FORGEJO_PACKAGE_USER` and a package-write `FORGEJO_PACKAGE_TOKEN` (or
-`FORGEJO_PACKAGES_TOKEN`). Secrets are supplied by GitHub, never stored in the POM.
+through the shared `instanto-poms` Maven workflow. Publication uses the artifacts
+from the verified source revision.
 
 Publication includes the parent POM, `leaflet-compat` and `leaflet-gwt` artifacts. The full demo is
 built and tested, but retains `maven.deploy.skip`: its `target/site` is a static
@@ -67,13 +63,5 @@ website, not a library release. This workflow does not deploy the website.
 A manual run on `main` repeats verification before publishing; pull requests and
 manual runs on other branches do not publish snapshots.
 
-For local publication, configure the same server credentials and run:
-
-```sh
-mvn --settings .github/maven-settings.xml clean deploy
-```
-
-The checked-in settings bootstrap parent/plugin resolution and reference credentials
-through environment variables. An org POM defines Maven conventions and destinations;
-it cannot create or trigger a repository's GitHub Actions workflow. Published
-`teavm-compat` dependencies are prerequisites; CI deliberately fails if they are absent.
+For local evaluation, use `mvn install` as shown above. This installs the artifacts
+in your local Maven repository for use by other projects.
