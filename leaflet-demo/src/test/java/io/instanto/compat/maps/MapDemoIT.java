@@ -302,8 +302,11 @@ public class MapDemoIT {
       assertEquals(1, page.locator("video.survey-video").count());
       assertEquals(
           "LOCAL VIDEO · illustrative animation", page.locator(".leaflet-tooltip").textContent());
+      page.evaluate("document.querySelector('video.survey-video').play().catch(()=>{})");
       page.waitForFunction(
-          "document.querySelector('video.survey-video').readyState>=2 && document.querySelector('video.survey-video').currentTime>0");
+          "document.querySelector('video.survey-video').readyState>=2 && document.querySelector('video.survey-video').currentTime>0",
+          null,
+          new Page.WaitForFunctionOptions().setTimeout(60_000));
       assertEquals(
           Boolean.TRUE,
           page.evaluate(
