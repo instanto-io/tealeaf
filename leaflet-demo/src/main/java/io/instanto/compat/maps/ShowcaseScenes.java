@@ -2,6 +2,7 @@ package io.instanto.compat.maps;
 
 import com.gwidgets.api.leaflet.*;
 import com.gwidgets.api.leaflet.options.*;
+import com.gwidgets.api.leaflet.utils.TealeafResources;
 import elemental2.core.Global;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLElement;
@@ -80,7 +81,7 @@ final class ShowcaseScenes {
                 .iconSize(L.point(42, 54, false))
                 .iconAnchor(L.point(21, 54, false))
                 .popupAnchor(L.point(0, -48, false))
-                .shadowUrl("leaflet/images/marker-shadow.png")
+                .shadowUrl(TealeafResources.DEFAULT_BASE_URL + "images/marker-shadow.png")
                 .shadowSize(L.point(41, 41, false))
                 .shadowAnchor(L.point(12, 40, false))
                 .build());
