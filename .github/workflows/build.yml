@@ -44,6 +44,13 @@ jobs:
           --update-snapshots
           -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
           clean verify
+      - name: Upload verified showcase
+        # Publish the uninstrumented bundle proved above. The coverage run below
+        # rebuilds the same site from instrumented code, so capture it first.
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: leaflet-demo/target/site
       - name: Verify with TeaCoCo browser coverage
         # The ordinary build above already proved the shipped bundle. This run
         # instruments the same application so Sonar sees the library lines the
@@ -108,3 +115,19 @@ jobs:
       maven-args: -DskipTests
       timeout-minutes: 60
     secrets: inherit
+
+  deploy:
+    # The Pages site is the verified TeaVM showcase from the same revision.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified showcase
+        id: deployment
+        uses: actions/deploy-pages@v4

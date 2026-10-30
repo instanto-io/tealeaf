@@ -59,9 +59,16 @@ from the verified source revision.
 
 Publication includes the parent POM, `leaflet-compat` and `leaflet-gwt` artifacts. The full demo is
 built and tested, but retains `maven.deploy.skip`: its `target/site` is a static
-website, not a library release. This workflow does not deploy the website.
-A manual run on `main` repeats verification before publishing; pull requests and
-manual runs on other branches do not publish snapshots.
+website, not a library release.
+
+The same `main` run publishes that verified TeaVM showcase to GitHub Pages at
+<https://instanto-io.github.io/tealeaf/>. The upload captures
+`leaflet-demo/target/site` from the ordinary `clean verify` before the TeaCoCo
+coverage run rebuilds it, so the site is the uninstrumented bundle the browser
+contracts proved. A separate `deploy` job depends on `verify`, and pull requests
+never deploy. A manual run on `main` repeats verification before publishing;
+pull requests and manual runs on other branches do not publish snapshots or the
+website.
 
 For local evaluation, use `mvn install` as shown above. This installs the artifacts
 in your local Maven repository for use by other projects.
