@@ -191,7 +191,7 @@ final class ApiContractChecks {
   }
 
   private static double popupContentWidth(HTMLElement content) {
-    return Double.parseDouble(content.style.width.replace("px", ""));
+    return Double.parseDouble(content.style.getPropertyValue("width").replace("px", ""));
   }
 
   private static void check(boolean condition, String message) {
