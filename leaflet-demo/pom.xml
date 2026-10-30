@@ -173,4 +173,56 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <!-- Instrument the TeaVM application with TeaCoCo and report the library
+           lines reached by the Playwright contracts. The demo is not published,
+           so the instrumented bundle never leaves this build. -->
+      <dependencies>
+        <dependency>
+          <groupId>io.instanto</groupId>
+          <artifactId>teacoco</artifactId>
+          <version>${teacoco.version}</version>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.teavm</groupId>
+            <artifactId>teavm-maven-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>io.instanto</groupId>
+                <artifactId>teacoco</artifactId>
+                <version>${teacoco.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <groupId>io.instanto</groupId>
+            <artifactId>teacoco-maven-plugin</artifactId>
+            <version>${teacoco.version}</version>
+            <configuration>
+              <mode>lines</mode>
+              <sourceRoots>
+                <sourceRoot>${project.basedir}/../leaflet-compat/src/main/java</sourceRoot>
+              </sourceRoots>
+              <dependencyIncludes>
+                <dependencyInclude>io.instanto:leaflet-compat</dependencyInclude>
+              </dependencyIncludes>
+            </configuration>
+            <executions>
+              <execution>
+                <id>coverage-report</id>
+                <phase>verify</phase>
+                <goals><goal>report</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

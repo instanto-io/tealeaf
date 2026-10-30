@@ -44,6 +44,22 @@ jobs:
           --update-snapshots
           -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
           clean verify
+      - name: Verify with TeaCoCo browser coverage
+        # The ordinary build above already proved the shipped bundle. This run
+        # instruments the same application so Sonar sees the library lines the
+        # Playwright contracts actually execute.
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.SONAR_TOKEN != ''
+        run: >-
+          mvn --settings .github/maven-settings.xml --batch-mode --no-transfer-progress
+          --update-snapshots
+          -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
+          -Pcoverage
+          -Dteavm.coverage.enabled=true
+          -Dteavm.coverage.mode=lines
+          -Dteavm.coverage.sourceRoots="$PWD/leaflet-compat/src/main/java"
+          -Dteavm.coverage.dataDirectory="$PWD/leaflet-demo/target/teavm-coverage"
+          -Dteavm.incremental=false
+          clean verify
       - name: SonarQube analysis
         # Analysis belongs to the default branch only: a pull-request run would
         # otherwise replace the project's main analysis with unmerged code.
@@ -55,6 +71,7 @@ jobs:
           mvn --settings .github/maven-settings.xml --batch-mode --no-transfer-progress
           -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
           sonar:sonar -Dsonar.projectKey=tealeaf -Dsonar.projectName=tealeaf
+          -Dsonar.coverageReportPaths="$PWD/leaflet-demo/target/teavm-coverage.xml"
           -Dsonar.qualitygate.wait=true
       - name: Merge SpotBugs SARIF
         if: always()

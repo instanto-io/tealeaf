@@ -332,6 +332,11 @@ public class MapDemoIT {
       page.locator("#recreate").click();
       assertEquals(1, page.locator("video.survey-video").count());
       assertTrue(errors.toString(), errors.isEmpty());
+      // Capture while the application realm is still alive; the legal and
+      // loader-error pages below replace it.
+      System.out.println(
+          "__TEAVM_COVERAGE_V1__:"
+              + page.evaluate("JSON.stringify(globalThis.__teavmCoverageV1 || {})"));
       page.locator("footer a[href='legal/']").click();
       assertEquals("Licenses & notices", page.locator("h1").textContent());
       assertEquals(8, page.locator("li a").count());
