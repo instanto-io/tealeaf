@@ -7,6 +7,9 @@ import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.nio.file.*;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -43,6 +46,17 @@ public class MapDemoIT {
     assertTrue(Files.isRegularFile(site.resolve("legal/runtime/index.html")));
     assertTrue(Files.isRegularFile(site.resolve("webjars/leaflet/1.9.4/LICENSE")));
     var server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+    // The default executor serves every connection on one thread. A browser
+    // keeps idle HTTP/1.1 connections open, so one idle socket would stall the
+    // page, script and media requests queued behind it.
+    ExecutorService executor =
+        Executors.newCachedThreadPool(
+            task -> {
+              Thread thread = new Thread(task, "demo-site");
+              thread.setDaemon(true);
+              return thread;
+            });
+    server.setExecutor(executor);
     server.createContext(
         "/",
         exchange -> {
@@ -56,13 +70,7 @@ public class MapDemoIT {
             return;
           }
           byte[] bytes = Files.readAllBytes(file);
-          exchange
-              .getResponseHeaders()
-              .set(
-                  "Content-Type",
-                  Files.probeContentType(file) == null
-                      ? "application/octet-stream"
-                      : Files.probeContentType(file));
+          exchange.getResponseHeaders().set("Content-Type", contentType(file));
           exchange.sendResponseHeaders(200, bytes.length);
           try (var output = exchange.getResponseBody()) {
             output.write(bytes);
@@ -364,6 +372,50 @@ public class MapDemoIT {
           0, page.locator("script[src*='missing-leaflet'], link[href*='missing-leaflet']").count());
     } finally {
       server.stop(0);
+      executor.shutdownNow();
+      executor.awaitTermination(5, TimeUnit.SECONDS);
+    }
+  }
+
+  private static String contentType(Path file) {
+    String name = file.getFileName().toString().toLowerCase(Locale.ROOT);
+    int dot = name.lastIndexOf('.');
+    String extension = dot < 0 ? "" : name.substring(dot + 1);
+    switch (extension) {
+      case "html":
+        return "text/html; charset=utf-8";
+      case "css":
+        return "text/css; charset=utf-8";
+      case "js":
+      case "mjs":
+        return "text/javascript; charset=utf-8";
+      case "json":
+        return "application/json; charset=utf-8";
+      case "svg":
+        return "image/svg+xml";
+      case "png":
+        return "image/png";
+      case "jpg":
+      case "jpeg":
+        return "image/jpeg";
+      case "gif":
+        return "image/gif";
+      case "ico":
+        return "image/x-icon";
+      case "webm":
+        return "video/webm";
+      case "mp4":
+        return "video/mp4";
+      case "wasm":
+        return "application/wasm";
+      default:
+        String probed = null;
+        try {
+          probed = Files.probeContentType(file);
+        } catch (java.io.IOException ignored) {
+          // Fall through to the generic type.
+        }
+        return probed == null ? "application/octet-stream" : probed;
     }
   }
 
