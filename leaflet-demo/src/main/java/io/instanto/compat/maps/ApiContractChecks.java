@@ -64,22 +64,27 @@ final class ApiContractChecks {
       popup.close();
       marker.remove();
 
-      Popup sizedPopup =
+      // Leaflet applies maxWidth/minWidth to the measured content width, not as
+      // CSS properties, so read the rendered content node back.
+      Popup widePopup =
           L.popup(
               position,
-              new PopupOptions.Builder()
-                  .content("sized")
-                  .maxWidth(320.0)
-                  .minWidth(120.0)
-                  .build());
-      sizedPopup.openOn(map);
-      check(
-          sizedPopup.getElement().getStyle().getPropertyValue("max-width").equals("320px"),
-          "popup maxWidth option");
-      check(
-          sizedPopup.getElement().getStyle().getPropertyValue("min-width").equals("120px"),
-          "popup minWidth option");
-      sizedPopup.close();
+              new PopupOptions.Builder().content("x".repeat(400)).maxWidth(120.0).build());
+      widePopup.openOn(map);
+      HTMLElement wideContent =
+          (HTMLElement) widePopup.getElement().querySelector(".leaflet-popup-content");
+      check(popupContentWidth(wideContent) <= 121, "popup maxWidth option");
+      widePopup.close();
+
+      Popup narrowPopup =
+          L.popup(
+              position,
+              new PopupOptions.Builder().content("sized").minWidth(200.0).build());
+      narrowPopup.openOn(map);
+      HTMLElement narrowContent =
+          (HTMLElement) narrowPopup.getElement().querySelector(".leaflet-popup-content");
+      check(popupContentWidth(narrowContent) >= 200, "popup minWidth option");
+      narrowPopup.close();
 
       Tooltip tooltip =
           L.tooltip(
@@ -183,6 +188,10 @@ final class ApiContractChecks {
       map.off();
       host.remove();
     }
+  }
+
+  private static double popupContentWidth(HTMLElement content) {
+    return Double.parseDouble(content.style.width.replace("px", ""));
   }
 
   private static void check(boolean condition, String message) {
