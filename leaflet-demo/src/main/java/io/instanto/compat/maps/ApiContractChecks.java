@@ -64,6 +64,23 @@ final class ApiContractChecks {
       popup.close();
       marker.remove();
 
+      Popup sizedPopup =
+          L.popup(
+              position,
+              new PopupOptions.Builder()
+                  .content("sized")
+                  .maxWidth(320.0)
+                  .minWidth(120.0)
+                  .build());
+      sizedPopup.openOn(map);
+      check(
+          sizedPopup.getElement().getStyle().getPropertyValue("max-width").equals("320px"),
+          "popup maxWidth option");
+      check(
+          sizedPopup.getElement().getStyle().getPropertyValue("min-width").equals("120px"),
+          "popup minWidth option");
+      sizedPopup.close();
+
       Tooltip tooltip =
           L.tooltip(
               position,

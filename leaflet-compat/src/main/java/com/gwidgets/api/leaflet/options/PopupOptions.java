@@ -276,7 +276,7 @@ public class PopupOptions {
      * @return the builder
      */
     public Builder maxWidth(Double maxWidth) {
-      this.maxHeight = maxWidth;
+      this.maxWidth = maxWidth;
       return this;
     }
 
