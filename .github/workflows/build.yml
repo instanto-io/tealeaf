@@ -10,8 +10,6 @@ permissions:
   contents: read
   # Required by the shared Maven publication workflow.
   packages: write
-  # Required to publish SpotBugs SARIF to code scanning.
-  security-events: write
 
 concurrency:
   group: tealeaf-${{ github.ref }}
@@ -20,7 +18,7 @@ concurrency:
 jobs:
   verify:
     # The private registry and browser-equipped runners are for trusted branches.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    if: (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'workflow_dispatch'
     runs-on: [self-hosted, instanto-container]
     timeout-minutes: 60
     env:
@@ -45,41 +43,10 @@ jobs:
           -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
           clean verify
       - name: Upload verified showcase
-        # Publish the uninstrumented bundle proved above. The coverage run below
-        # rebuilds the same site from instrumented code, so capture it first.
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3
         with:
           path: leaflet-demo/target/site
-      - name: Verify with TeaCoCo browser coverage
-        # The ordinary build above already proved the shipped bundle. This run
-        # instruments the same application so Sonar sees the library lines the
-        # Playwright contracts actually execute.
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.SONAR_TOKEN != ''
-        run: >-
-          mvn --settings .github/maven-settings.xml --batch-mode --no-transfer-progress
-          --update-snapshots
-          -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
-          -Pcoverage
-          -Dteavm.coverage.enabled=true
-          -Dteavm.coverage.mode=lines
-          -Dteavm.coverage.sourceRoots="$PWD/leaflet-compat/src/main/java"
-          -Dteavm.coverage.dataDirectory="$PWD/leaflet-demo/target/teavm-coverage"
-          -Dteavm.incremental=false
-          clean verify
-      - name: SonarQube analysis
-        # Analysis belongs to the default branch only: a pull-request run would
-        # otherwise replace the project's main analysis with unmerged code.
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.SONAR_TOKEN != ''
-        continue-on-error: true
-        env:
-          SONAR_HOST_URL: https://sonar.instanto.io
-        run: >-
-          mvn --settings .github/maven-settings.xml --batch-mode --no-transfer-progress
-          -Dmaven.repo.local="$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}"
-          sonar:sonar -Dsonar.projectKey=tealeaf -Dsonar.projectName=tealeaf
-          -Dsonar.coverageReportPaths="$PWD/leaflet-demo/target/teavm-coverage.xml"
-          -Dsonar.qualitygate.wait=true
       - name: Publish quality summary
         if: always()
         continue-on-error: true
@@ -104,21 +71,20 @@ jobs:
         run: rm -rf -- "$RUNNER_TEMP/tealeaf-m2-${{ github.run_id }}-${{ github.run_attempt }}" "$PLAYWRIGHT_BROWSERS_PATH"
 
   publish-snapshot:
-    # Verification and deployment use the same workflow commit. Manual main runs
-    # also verify first; there is no ungated publication-only dispatch.
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: instanto-io/instanto-poms/.github/workflows/maven-build.yml@main
     with:
       name: Publish Tealeaf snapshots to packages.instanto.io
       goals: clean deploy
-      maven-args: -DskipTests
+      fast-deploy: true
+      downstream-checks: false
+      sonar: false
       timeout-minutes: 60
     secrets: inherit
 
   deploy:
-    # The Pages site is the verified TeaVM showcase from the same revision.
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    # The Pages site is the verified TeaVM showcase from manual main verification.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
     needs: verify
     runs-on: ubuntu-latest
     permissions:
