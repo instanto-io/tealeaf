@@ -17,6 +17,12 @@ import elemental2.dom.DomGlobal;
 
 /** A map built entirely through the adapted Java Leaflet API. */
 public final class MapDemo {
+  private static final String CLICK_EVENT = "click";
+  private static final String OVERLAY_CONTROL = "overlay";
+  private static final String TILES_CONTROL = "tiles";
+  private static final String LISTEN_CONTROL = "listen";
+  private static final String ARIA_PRESSED = "aria-pressed";
+
   private static Map map;
   private static FeatureGroup overlay;
   private static TileLayer tiles;
@@ -55,29 +61,39 @@ public final class MapDemo {
         MapDemo::loadFailed);
     if (DomGlobal.location.search.contains("verify-api")) ApiContractChecks.run();
     create();
+    bindSceneButtons();
+    bindLayerButtons();
+    bindMarkerButtons();
+    bindNavigationButtons();
+  }
+
+  private static void bindSceneButtons() {
     for (int i = 0; i < ShowcaseScenes.TITLES.length; i++) {
       final int selected = i;
       DomGlobal.document
           .getElementById("scene-" + i)
           .addEventListener(
-              "click",
+              CLICK_EVENT,
               event -> {
                 scene = selected;
                 if (map == null) create();
                 else showScene();
               });
     }
+  }
+
+  private static void bindLayerButtons() {
     DomGlobal.document
         .getElementById("fit")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map != null) fit();
             });
     DomGlobal.document
-        .getElementById("overlay")
+        .getElementById(OVERLAY_CONTROL)
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null) return;
               if (map.hasLayer(overlay)) map.removeLayer(overlay);
@@ -85,19 +101,22 @@ public final class MapDemo {
               layerButtons();
             });
     DomGlobal.document
-        .getElementById("tiles")
+        .getElementById(TILES_CONTROL)
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null) return;
               if (map.hasLayer(tiles)) map.removeLayer(tiles);
               else tiles.addTo(map);
               layerButtons();
             });
+  }
+
+  private static void bindMarkerButtons() {
     DomGlobal.document
         .getElementById("move")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null || marker == null) return;
               if (!map.hasLayer(overlay)) overlay.addTo(map);
@@ -108,24 +127,27 @@ public final class MapDemo {
               status("Marker moved · " + moves);
             });
     DomGlobal.document
-        .getElementById("listen")
+        .getElementById(LISTEN_CONTROL)
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null) return;
-              if (listening) map.off("click", clickHandler);
-              else map.on("click", clickHandler);
+              if (listening) map.off(CLICK_EVENT, clickHandler);
+              else map.on(CLICK_EVENT, clickHandler);
               listening = !listening;
-              DomGlobal.document.getElementById("listen").textContent =
+              DomGlobal.document.getElementById(LISTEN_CONTROL).textContent =
                   listening ? "Pause clicks" : "Resume clicks";
             });
     DomGlobal.document
         .getElementById("swap")
-        .addEventListener("click", event -> ShowcaseScenes.swapIcon());
+        .addEventListener(CLICK_EVENT, event -> ShowcaseScenes.swapIcon());
+  }
+
+  private static void bindNavigationButtons() {
     DomGlobal.document
         .getElementById("fly")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null) return;
               map.flyTo(
@@ -135,7 +157,7 @@ public final class MapDemo {
     DomGlobal.document
         .getElementById("fly-bounds")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null) return;
               map.flyToBounds(
@@ -150,7 +172,7 @@ public final class MapDemo {
     DomGlobal.document
         .getElementById("stop")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map != null) {
                 map.stop();
@@ -160,7 +182,7 @@ public final class MapDemo {
     DomGlobal.document
         .getElementById("note")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               if (map == null) return;
               Popup note =
@@ -174,11 +196,11 @@ public final class MapDemo {
                   note.getLatLng(),
                   new PanInsideOptions.Builder().padding(L.point(80, 80, false)).build());
             });
-    DomGlobal.document.getElementById("destroy").addEventListener("click", event -> destroy());
+    DomGlobal.document.getElementById("destroy").addEventListener(CLICK_EVENT, event -> destroy());
     DomGlobal.document
         .getElementById("recreate")
         .addEventListener(
-            "click",
+            CLICK_EVENT,
             event -> {
               destroy();
               create();
@@ -216,7 +238,7 @@ public final class MapDemo {
           DomGlobal.document.getElementById("position").textContent =
               "Last click: " + point.lat + ", " + point.lng;
         };
-    map.on("click", clickHandler);
+    map.on(CLICK_EVENT, clickHandler);
     map.on("zoomend", (EventCallback<Event>) event -> zoom());
     map.once(
         "unload",
@@ -227,7 +249,7 @@ public final class MapDemo {
                   "Maps released: " + unloads;
             });
     listening = true;
-    DomGlobal.document.getElementById("listen").textContent = "Pause clicks";
+    DomGlobal.document.getElementById(LISTEN_CONTROL).textContent = "Pause clicks";
     zoom();
     setControlsEnabled(true);
     status("Ready");
@@ -236,7 +258,7 @@ public final class MapDemo {
   private static void destroy() {
     if (map != null) {
       ShowcaseScenes.release();
-      map.off("click", clickHandler);
+      map.off(CLICK_EVENT, clickHandler);
       map.remove();
       map.off();
       map = null;
@@ -281,7 +303,7 @@ public final class MapDemo {
     for (int i = 0; i < ShowcaseScenes.TITLES.length; i++) {
       DomGlobal.document
           .getElementById("scene-" + i)
-          .setAttribute("aria-pressed", String.valueOf(scene == i));
+          .setAttribute(ARIA_PRESSED, String.valueOf(scene == i));
     }
     DomGlobal.document.getElementById("scene-title").textContent = ShowcaseScenes.TITLES[scene];
     DomGlobal.document.getElementById("scene-description").textContent =
@@ -305,23 +327,32 @@ public final class MapDemo {
 
   private static void layerButtons() {
     boolean visible = map.hasLayer(overlay);
-    DomGlobal.document.getElementById("overlay").textContent =
+    DomGlobal.document.getElementById(OVERLAY_CONTROL).textContent =
         visible ? "Hide features" : "Show features";
     DomGlobal.document
-        .getElementById("overlay")
-        .setAttribute("aria-pressed", String.valueOf(visible));
+        .getElementById(OVERLAY_CONTROL)
+        .setAttribute(ARIA_PRESSED, String.valueOf(visible));
     boolean basemap = map.hasLayer(tiles);
-    DomGlobal.document.getElementById("tiles").textContent =
+    DomGlobal.document.getElementById(TILES_CONTROL).textContent =
         basemap ? "Hide basemap" : "Show basemap";
     DomGlobal.document
-        .getElementById("tiles")
-        .setAttribute("aria-pressed", String.valueOf(basemap));
+        .getElementById(TILES_CONTROL)
+        .setAttribute(ARIA_PRESSED, String.valueOf(basemap));
   }
 
   private static void setControlsEnabled(boolean enabled) {
     for (String id :
         new String[] {
-          "move", "listen", "fit", "overlay", "tiles", "swap", "fly", "fly-bounds", "stop", "note"
+          "move",
+          LISTEN_CONTROL,
+          "fit",
+          OVERLAY_CONTROL,
+          TILES_CONTROL,
+          "swap",
+          "fly",
+          "fly-bounds",
+          "stop",
+          "note"
         }) {
       var button = DomGlobal.document.getElementById(id);
       if (enabled && (!id.equals("move") || marker != null) && (!id.equals("swap") || scene == 4))
